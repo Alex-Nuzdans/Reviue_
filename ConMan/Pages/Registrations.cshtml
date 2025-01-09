@@ -1,0 +1,26 @@
+﻿@page "/registrations"
+@model ConMan.Pages.RegistrationsModel
+
+@{
+    ViewData["Title"] = "Регистрации";
+}
+
+<h2>Список регистраций</h2>
+<p><a href="/registrations/create">Добавить регистрацию</a></p>
+<table style="width:100%">
+    <tr>
+        <th>Ид</th>
+        <th>Ид события</th>
+        <th>Ид участника</th>
+        <th>Статус</th>
+    </tr>
+    @foreach (var reg in Model.RegistrationsDb)
+    {
+        <tr>
+            <td>@reg.Id</td>
+            <td>@reg.EventId</td>
+            <td>@reg.ParticipantId</td>
+            <td>@reg.Status</td>
+        </tr>
+    }
+</table>

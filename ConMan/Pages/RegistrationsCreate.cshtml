@@ -1,0 +1,27 @@
+﻿@page "/registrations/create"
+@model ConMan.Pages.RegistrationsCreate
+
+@{
+    ViewData["Title"] = "Создание регистрации";
+}
+
+<h2>Добавление новой регистрации</h2>
+<form method="post">
+    <p>
+        <label for="event_id">Номер события</label><br />
+        <input type="number" name="Registration.EventId" id="event_id" required />
+    </p>
+    <p>
+        <label for="participant_id">Номер участника</label><br />
+        <input type="number" name="Registration.ParticipantId" id="participant_id" required />
+    </p>
+    <p>
+        <label for="status">Статус регистрации</label><br />
+        <select name="Registration.Status" id="status" required>
+            <option value="Ожидает">Ожидает</option>
+            <option value="Одобрено">Одобрено</option>
+            <option value="Отменено">Отменено</option>
+        </select>
+    </p>
+    <input type="submit" value="Отправить" />
+</form>

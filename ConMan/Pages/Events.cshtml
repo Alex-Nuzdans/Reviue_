@@ -1,0 +1,28 @@
+﻿@page "/events"
+@model EventsModel
+
+@{
+    ViewData["Title"] = "События";
+}
+
+<h2>Список событий</h2>
+<p><a href="/events/create">Добавить событие</a></p>
+<table style="width:100%">
+    <tr>
+        <th>Ид</th>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Дата проведения</th>
+        <th>Место проведения</th>
+    </tr>
+    @foreach (var reg in Model.EventsDb)
+    {
+        <tr>
+            <td>@reg.Id</td>
+            <td>@reg.Name</td>
+            <td>@reg.Description</td>
+            <td>@reg.Date</td>
+            <td>@reg.Location</td>
+        </tr>
+    }
+</table>

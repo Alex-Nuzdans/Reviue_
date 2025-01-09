@@ -1,0 +1,23 @@
+﻿@page "/participants/create"
+@model ConMan.Pages.ParticipantsCreate
+
+@{
+    ViewData["Title"] = "Добавление участников";
+}
+
+<h2>Добавление нового участника</h2>
+<form method="post">
+    <p>
+        <label for="name">Имя (от 4 до 100 символов)</label><br />
+        <input type="text" name="Participant.Name" id="name" size="30" required minlength="4" maxlength="100"/>
+    </p>
+    <p>
+        <label for="email">Электронная почта (от 3 до 255 символов) </label><br />
+        <input type="email" name="Participant.Email" id="email" size="30" required minlength="3" maxlength="255" />
+    </p>
+    <p>
+        <label for="phone">Телефон</label><br />
+        <input type="tel" name="Participant.Phone" id="phone" size="30" required />
+    </p>
+    <input type="submit" value="Отправить" />
+</form>

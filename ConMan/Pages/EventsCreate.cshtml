@@ -1,0 +1,27 @@
+﻿@page "/events/create"
+@model ConMan.Pages.EventsCreate
+
+@{
+    ViewData["Title"] = "Создание событий";
+}
+
+<h2>Добавление нового события</h2>
+<form method="post">
+    <p>
+        <label for="name">Название (от 4 до 100 символов)</label><br />
+        <input type="text" name="Event.Name" id="name" size="30" required minlength="4" maxlength="100"/>
+    </p>
+    <p>
+        <label for="description">Описание (до 255 символов)</label><br />
+        <input type="text" name="Event.Description" id="description" size="30" maxlength="255"/>
+    </p>
+    <p>
+        <label for="date">Дата проведения</label><br />
+        <input type="datetime-local" name="Event.Date" id="date" size="30" />
+    </p>
+    <p>
+        <label for="location">Место проведения (от 4 до 100 символов)</label><br />
+        <input type="text" name="Event.Location" id="location" size="30" minlength="4" maxlength="100"/>
+    </p>
+    <input type="submit" value="Отправить" />
+</form>

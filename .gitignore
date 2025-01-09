@@ -1,0 +1,96 @@
+# Общие настройки для всех проектов .NET
+*.swp
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.sln
+*.suo
+*.DS_Store
+*.project
+*.pydevproject
+*.cache
+*.pdb
+*.ilk
+*.idb
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+*.obj
+*.exe
+*.log
+*.mdf
+*.ldf
+*.ndb
+*.class
+*.iml
+*.ipr
+*.iws
+*.dll
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite
+*.pidb
+*.pdb
+*.pyproj
+*.pki
+*.plg
+*.vs
+!.docs/
+/Tools/
+
+# Конфигурации IDE и системы
+.idea/
+*.vs
+.vscode/
+*.tmproj
+Thumbs.db
+*.DS_Store
+
+# ASP.NET Core конфигурации
+bin/
+obj/
+out/
+
+# Razor Class Library
+*.razor.g.cs
+*.razor.g.i.cs
+
+# Конфигурации NuGet
+*.nupkg
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Папки и файлы, создаваемые для публикации и компиляции
+publish/
+wwwroot/
+*.publish.xml
+
+# Пользовательские настройки
+*.user
+*.temp
+*.bak
+*.old
+*.log
+
+# Secrets и конфигурации
+secrets.json
+appsettings.Development.json
+appsettings.json
+
+# Конфигурации логов и временные файлы
+*.log
+*.tlog
+*.cache
+
+# Конфигурации CI/CD
+*.dotnet_toolchain.test.*
+
+# Отладочные файлы
+*.tlog
+*.log
