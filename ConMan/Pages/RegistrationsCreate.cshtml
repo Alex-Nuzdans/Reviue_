@@ -8,20 +8,42 @@
 <h2>Добавление новой регистрации</h2>
 <form method="post">
     <p>
-        <label for="event_id">Номер события</label><br />
-        <input type="number" name="Registration.EventId" id="event_id" required />
+        <label asp-for="Registration.EventId">Номер события</label><br />
+        <input asp-for="Registration.EventId" type="number" required />
+        <span asp-validation-for="Registration.EventId" class="text-danger"></span>
     </p>
     <p>
-        <label for="participant_id">Номер участника</label><br />
-        <input type="number" name="Registration.ParticipantId" id="participant_id" required />
+        <label asp-for="Registration.ParticipantId">Номер участника</label><br />
+        <input asp-for="Registration.ParticipantId" type="number" required />
+        <span asp-validation-for="Registration.ParticipantId" class="text-danger"></span>
     </p>
     <p>
-        <label for="status">Статус регистрации</label><br />
-        <select name="Registration.Status" id="status" required>
-            <option value="Ожидает">Ожидает</option>
-            <option value="Одобрено">Одобрено</option>
-            <option value="Отменено">Отменено</option>
+        <label asp-for="Registration.StatusId">Статус регистрации</label><br />
+        <select asp-for="Registration.StatusId" asp-items="@(new SelectList(Model.Statuses, "Id", "StatusName"))" required>
+            <option value="">Выберите статус</option>
         </select>
+        <span asp-validation-for="Registration.StatusId" class="text-danger"></span>
     </p>
     <input type="submit" value="Отправить" />
 </form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div style="color: red;">
+        <ul>
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

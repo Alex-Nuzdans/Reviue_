@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ConMan.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ConMan.Pages;
 
@@ -16,6 +17,34 @@ public class RegistrationsModel : PageModel
     
     public void OnGet()
     {
-        RegistrationsDb = _context.Registrations.AsNoTracking().ToList();
+        RegistrationsDb = _context.Registrations
+            .Include(r => r.Status)
+            .OrderBy(r => r.Id)
+            .AsNoTracking()
+            .ToList();
+    }
+    
+    public async Task<IActionResult> OnPostDeleteAsync(int id)
+    {
+        var registration = await _context.Registrations.FindAsync(id);
+
+        if (registration == null)
+        {
+            TempData["ErrorMessage"] = "Статус не найден.";
+            return RedirectToPage();
+        }
+
+        try
+        {
+            _context.Registrations.Remove(registration);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            TempData["ErrorMessage"] = "Не удалось удалить регистрацию. Возможно, она используется в других записях.";
+            return RedirectToPage();
+        }
+
+        return RedirectToPage();
     }
 }

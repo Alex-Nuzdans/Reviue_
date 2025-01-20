@@ -1,0 +1,61 @@
+﻿@page "/statuses"
+@model ConMan.Pages.StatusesModel
+
+@{
+ViewData["Title"] = "Статусы регистраций";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+<div id="notification" class="alert alert-danger">
+    @TempData["ErrorMessage"]
+</div>
+}
+
+<h2>Список статусов регистраций</h2>
+<p><a href="/statuses/create">Добавить статус регистрации</a></p>
+<table style="width:100%">
+    <tr>
+        <th>Ид</th>
+        <th>Статус</th>
+        <th>Действия</th>
+    </tr>
+    @foreach (var stat in Model.StatusesDb)
+    {
+        <tr>
+            <td>@stat.Id</td>
+            <td>@stat.StatusName</td>
+            <td>
+                <a href="/statuses/edit/@stat.Id" class="btn btn-primary">Изменить</a>
+                <form asp-page-handler="delete" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@stat.Id" />
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить этот статус?')">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var notification = document.getElementById("notification");
+            if (notification) {
+                setTimeout(function () {
+                    notification.style.display = "none";
+                }, 5000); // Скрыть уведомление через 5 секунд
+            }
+        });
+    </script>
+    <style>
+        #notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+}

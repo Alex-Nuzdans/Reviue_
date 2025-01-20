@@ -1,6 +1,64 @@
-﻿@page "/participant/edit" <!-- нужно придумать как сделать в формате "/.../{id}" -->
+﻿@page "/participants/edit/{id:int}"
 @model ConMan.Pages.ParticipantsEdit
 
 @{
     ViewData["Title"] = "Редактирование участника";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+<div id="notification" class="alert alert-danger">
+    @TempData["ErrorMessage"]
+</div>
+}
+
+<h2>Редактирование участника</h2>
+<form method="post">
+    <input type="hidden" asp-for="Participant.Id" />
+    <p>
+        <label asp-for="Participant.Name">Имя</label><br />
+        <input asp-for="Participant.Name" type="text" required />
+        <span asp-validation-for="Participant.Name" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Participant.Email">Электронная почта</label><br />
+        <input asp-for="Participant.Email" type="text" required />
+        <span asp-validation-for="Participant.Email" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Participant.Phone">Номер телефона</label><br />
+        <input asp-for="Participant.Phone" type="tel" required />
+        <span asp-validation-for="Participant.Phone" class="text-danger"></span>
+    </p>
+    <input type="submit" value="Сохранить" />
+</form>
+
+<a href="/participants" class="btn btn-secondary">Отмена</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var notification = document.getElementById("notification");
+            if (notification) {
+                setTimeout(function () {
+                    notification.style.display = "none";
+                }, 5000); // Скрыть уведомление через 5 секунд
+            }
+        });
+    </script>
+    <style>
+        #notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 }

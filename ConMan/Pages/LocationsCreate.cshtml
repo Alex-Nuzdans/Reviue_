@@ -1,0 +1,27 @@
+﻿@page "/locations/create"
+@model ConMan.Pages.LocationsCreate
+
+@{
+ViewData["Title"] = "Добавление мест проведения";
+}
+
+<h2>Добавление нового места проведения</h2>
+<form method="post">
+    <p>
+        <label for="location_name">Название (от 2 до 255 символов)</label><br />
+        <input type="text" name="Location.LocationName" id="location_name" size="30" required minlength="2" maxlength="255"/>
+    </p>
+    <p>
+        <label for="address">Адрес (до 255 символов, необязательно) </label><br />
+        <input type="text" name="Location.Address" id="address" size="30" required maxlength="255" />
+    </p>
+    <p>
+        <label for="city">Город (от 2 до 255 символов, необязательно)</label><br />
+        <input type="text" name="Location.City" id="city" size="30" required minlength="2" maxlength="255"/>
+    </p>
+    <p>
+        <label for="country">Страна (от 3 до 255 символов, необязательно)</label><br />
+        <input type="text" name="Location.Country" id="country" size="30" required minlength="3" maxlength="255"/>
+    </p>
+    <input type="submit" value="Отправить" />
+</form>

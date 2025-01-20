@@ -1,0 +1,15 @@
+﻿@page "/statuses/create"
+@model ConMan.Pages.StatusesCreate
+
+@{
+ViewData["Title"] = "Добавление статуса регистрации";
+}
+
+<h2>Добавление нового статуса регистрации</h2>
+<form method="post">
+    <p>
+        <label for="status_name">Статус</label><br />
+        <input type="text" name="Status.StatusName" id="status_name" size="30" required minlength="2" maxlength="255"/>
+    </p>
+    <input type="submit" value="Отправить" />
+</form>

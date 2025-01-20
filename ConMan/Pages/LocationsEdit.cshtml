@@ -1,0 +1,40 @@
+﻿@page "/locations/edit/{id:int}"
+@model ConMan.Pages.LocationsEdit
+
+@{
+    ViewData["Title"] = "Редактирование участника";
+}
+
+<h2>Редактирование участника</h2>
+<form method="post">
+    <input type="hidden" asp-for="Location.Id" />
+    <p>
+        <label asp-for="Location.LocationName">Название</label><br />
+        <input asp-for="Location.LocationName" type="text" required />
+        <span asp-validation-for="Location.LocationName" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Location.Address">Адрес</label><br />
+        <input asp-for="Location.Address" type="text" required />
+        <span asp-validation-for="Location.Address" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Location.City">Город</label><br />
+        <input asp-for="Location.City" type="text" required />
+        <span asp-validation-for="Location.City" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Location.Country">Страна</label><br />
+        <input asp-for="Location.Country" type="text" required />
+        <span asp-validation-for="Location.Country" class="text-danger"></span>
+    </p>
+    <input type="submit" value="Сохранить" />
+</form>
+
+<a href="/locations" class="btn btn-secondary">Отмена</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

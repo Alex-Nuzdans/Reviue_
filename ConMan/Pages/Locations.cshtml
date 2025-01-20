@@ -1,0 +1,67 @@
+﻿@page "/locations"
+@model ConMan.Pages.LocationsModel
+
+@{
+ViewData["Title"] = "Места проведения мероприятий";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+<div id="notification" class="alert alert-danger">
+    @TempData["ErrorMessage"]
+</div>
+}
+
+<h2>Список мест проведения мероприятий</h2>
+<p><a href="/locations/create">Добавить место проведения мероприятия</a></p>
+<table style="width:100%">
+    <tr>
+        <th>Ид</th>
+        <th>Название</th>
+        <th>Адрес</th>
+        <th>Город</th>
+        <th>Страна</th>
+        <th>Действия</th>
+    </tr>
+    @foreach (var loc in Model.LocationsDb)
+    {
+        <tr>
+            <td>@loc.Id</td>
+            <td>@loc.LocationName</td>
+            <td>@loc.Address</td>
+            <td>@loc.City</td>
+            <td>@loc.Country</td>
+            <td>
+                <a href="/locations/edit/@loc.Id" class="btn btn-primary">Изменить</a>
+                <form asp-page-handler="delete" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@loc.Id" />
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить это место проведения?')">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var notification = document.getElementById("notification");
+            if (notification) {
+                setTimeout(function () {
+                    notification.style.display = "none";
+                }, 5000); // Скрыть уведомление через 5 секунд
+            }
+        });
+    </script>
+    <style>
+        #notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+}

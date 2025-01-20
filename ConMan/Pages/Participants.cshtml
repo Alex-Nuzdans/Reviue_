@@ -5,6 +5,13 @@
     ViewData["Title"] = "Участники";
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+<div id="notification" class="alert alert-danger">
+    @TempData["ErrorMessage"]
+</div>
+}
+
 <h2>Список участников</h2>
 <p><a href="/participants/create">Добавить участника</a></p>
 <table style="width:100%">
@@ -12,15 +19,47 @@
         <th>Ид</th>
         <th>Имя</th>
         <th>Электронная почта</th>
-        <th>Телефон</th>
+        <th>Номер телефона</th>
+        <th>Действия</th>
     </tr>
-    @foreach (var reg in Model.ParticipantsDb)
+    @foreach (var par in Model.ParticipantsDb)
     {
         <tr>
-            <td>@reg.Id</td>
-            <td>@reg.Name</td>
-            <td>@reg.Email</td>
-            <td>@reg.Phone</td>
+            <td>@par.Id</td>
+            <td>@par.Name</td>
+            <td>@par.Email</td>
+            <td>@par.Phone</td>
+            <td>
+                <a href="/participants/edit/@par.Id" class="btn btn-primary">Изменить</a>
+                <form asp-page-handler="delete" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@par.Id" />
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить этого участника?')">Удалить</button>
+                </form>
+            </td>
         </tr>
     }
 </table>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var notification = document.getElementById("notification");
+            if (notification) {
+                setTimeout(function () {
+                    notification.style.display = "none";
+                }, 5000); // Скрыть уведомление через 5 секунд
+            }
+        });
+    </script>
+    <style>
+        #notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+}

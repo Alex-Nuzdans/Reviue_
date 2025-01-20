@@ -19,11 +19,7 @@ public class EventsCreate : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        // Преобразование даты в UTC (потому что иначе ему не нравится)
-        if (Event.Date.HasValue)
-        {
-            Event.Date = DateTime.SpecifyKind(Event.Date.Value, DateTimeKind.Utc);
-        }
+        Event.EnsureUtcDates();
         
         _context.Events.Add(Event);
         await _context.SaveChangesAsync();

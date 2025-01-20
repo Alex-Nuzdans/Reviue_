@@ -1,6 +1,66 @@
-﻿@page "/registration/edit" <!-- нужно придумать как сделать в формате "/.../{id}" -->
+﻿@page "/registrations/edit/{id:int}"
 @model ConMan.Pages.RegistrationsEdit
 
 @{
     ViewData["Title"] = "Редактирование регистрации";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+<div id="notification" class="alert alert-danger">
+    @TempData["ErrorMessage"]
+</div>
+}
+
+<h2>Редактирование регистрации</h2>
+<form method="post">
+    <input type="hidden" asp-for="Registration.Id" />
+    <p>
+        <label asp-for="Registration.EventId">Номер события</label><br />
+        <input asp-for="Registration.EventId" type="number" required />
+        <span asp-validation-for="Registration.EventId" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Registration.ParticipantId">Номер участника</label><br />
+        <input asp-for="Registration.ParticipantId" type="number" required />
+        <span asp-validation-for="Registration.ParticipantId" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Registration.StatusId">Статус регистрации</label><br />
+        <select asp-for="Registration.StatusId" asp-items="@(new SelectList(Model.Statuses, "Id", "StatusName"))" required>
+            <option value="">Выберите статус</option>
+        </select>
+        <span asp-validation-for="Registration.StatusId" class="text-danger"></span>
+    </p>
+    <input type="submit" value="Сохранить" />
+</form>
+
+<a href="/registrations" class="btn btn-secondary">Отмена</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var notification = document.getElementById("notification");
+            if (notification) {
+                setTimeout(function () {
+                    notification.style.display = "none";
+                }, 5000); // Скрыть уведомление через 5 секунд
+            }
+        });
+    </script>
+    <style>
+        #notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 }

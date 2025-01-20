@@ -1,6 +1,71 @@
-﻿@page "/events/edit" <!-- нужно придумать как сделать в формате "/.../{id}" -->
+﻿@page "/events/edit/{id:int}"
 @model ConMan.Pages.EventsEdit
 
 @{
-    ViewData["Title"] = "Редактирование события";
+    ViewData["Title"] = "Редактирование регистрации";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+<div id="notification" class="alert alert-danger">
+    @TempData["ErrorMessage"]
+</div>
+}
+
+<h2>Редактирование регистрации</h2>
+<form method="post">
+    <input type="hidden" asp-for="Event.Id" />
+    <p>
+        <label asp-for="Event.Name">Название</label><br />
+        <input asp-for="Event.Name" type="text" required />
+        <span asp-validation-for="Event.Name" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Event.Description">Описание</label><br />
+        <input asp-for="Event.Description" type="text" required />
+        <span asp-validation-for="Event.Description" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Event.Date">Дата проведения</label><br />
+        <input asp-for="Event.Date" type="datetime-local" required />
+        <span asp-validation-for="Event.Description" class="text-danger"></span>
+    </p>
+    <p>
+        <label asp-for="Event.LocationId">Место проведения</label><br />
+        <select asp-for="Event.LocationId" asp-items="@(new SelectList(Model.Locations, "Id", "LocationName"))" required>
+            <option value="">Выберите место проведения</option>
+        </select>
+        <span asp-validation-for="Event.LocationId" class="text-danger"></span>
+    </p>
+    <input type="submit" value="Сохранить" />
+</form>
+
+<a href="/events" class="btn btn-secondary">Отмена</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var notification = document.getElementById("notification");
+            if (notification) {
+                setTimeout(function () {
+                    notification.style.display = "none";
+                }, 5000); // Скрыть уведомление через 5 секунд
+            }
+        });
+    </script>
+    <style>
+        #notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 }

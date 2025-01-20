@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ConMan.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20250109171557_InitialCreate")]
+    [Migration("20250120174641_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -33,14 +33,15 @@ namespace ConMan.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("Date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("text");
+                    b.Property<int>("LocationId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -48,7 +49,38 @@ namespace ConMan.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId");
+
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("ConMan.Models.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LocationName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("ConMan.Models.Participant", b =>
@@ -90,9 +122,8 @@ namespace ConMan.Migrations
                     b.Property<int>("ParticipantId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("StatusId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -100,7 +131,37 @@ namespace ConMan.Migrations
 
                     b.HasIndex("ParticipantId");
 
+                    b.HasIndex("StatusId");
+
                     b.ToTable("Registrations");
+                });
+
+            modelBuilder.Entity("ConMan.Models.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("StatusName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statuses");
+                });
+
+            modelBuilder.Entity("ConMan.Models.Event", b =>
+                {
+                    b.HasOne("ConMan.Models.Location", "Location")
+                        .WithMany("Events")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("ConMan.Models.Registration", b =>
@@ -108,18 +169,26 @@ namespace ConMan.Migrations
                     b.HasOne("ConMan.Models.Event", "Event")
                         .WithMany("Registrations")
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ConMan.Models.Participant", "Participant")
                         .WithMany("Registrations")
                         .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ConMan.Models.Status", "Status")
+                        .WithMany("Registrations")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Event");
 
                     b.Navigation("Participant");
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("ConMan.Models.Event", b =>
@@ -127,7 +196,17 @@ namespace ConMan.Migrations
                     b.Navigation("Registrations");
                 });
 
+            modelBuilder.Entity("ConMan.Models.Location", b =>
+                {
+                    b.Navigation("Events");
+                });
+
             modelBuilder.Entity("ConMan.Models.Participant", b =>
+                {
+                    b.Navigation("Registrations");
+                });
+
+            modelBuilder.Entity("ConMan.Models.Status", b =>
                 {
                     b.Navigation("Registrations");
                 });

@@ -5,6 +5,13 @@
     ViewData["Title"] = "События";
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+<div id="notification" class="alert alert-danger">
+    @TempData["ErrorMessage"]
+</div>
+}
+
 <h2>Список событий</h2>
 <p><a href="/events/create">Добавить событие</a></p>
 <table style="width:100%">
@@ -14,15 +21,47 @@
         <th>Описание</th>
         <th>Дата проведения</th>
         <th>Место проведения</th>
+        <th>Действия</th>
     </tr>
-    @foreach (var reg in Model.EventsDb)
+    @foreach (var ev in Model.EventsDb)
     {
         <tr>
-            <td>@reg.Id</td>
-            <td>@reg.Name</td>
-            <td>@reg.Description</td>
-            <td>@reg.Date</td>
-            <td>@reg.Location</td>
+            <td>@ev.Id</td>
+            <td>@ev.Name</td>
+            <td>@ev.Description</td>
+            <td>@ev.Date</td>
+            <td>@ev.Location.LocationName</td>
+            <td>
+                <a href="/events/edit/@ev.Id" class="btn btn-primary">Изменить</a>
+                <form asp-page-handler="delete" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@ev.Id" />
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить это мероприятие?')">Удалить</button>
+                </form>
+            </td>
         </tr>
     }
 </table>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var notification = document.getElementById("notification");
+            if (notification) {
+                setTimeout(function () {
+                    notification.style.display = "none";
+                }, 5000); // Скрыть уведомление через 5 секунд
+            }
+        });
+    </script>
+    <style>
+        #notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+}
