@@ -17,8 +17,10 @@
 <table style="width:100%">
     <tr>
         <th>Ид</th>
-        <th>Ид события</th>
-        <th>Ид участника</th>
+        <th>Название события</th>
+        <th>Имя участника</th>
+        <th>Эл. почта участника</th>
+        <th>Номер тел. участника</th>
         <th>Статус</th>
         <th>Действия</th>
     </tr>
@@ -26,8 +28,10 @@
     {
         <tr>
             <td>@reg.Id</td>
-            <td>@reg.EventId</td>
-            <td>@reg.ParticipantId</td>
+            <td>@reg.Event.Name</td>
+            <td>@reg.Participant.Name</td>
+            <td>@reg.Participant.Email</td>
+            <td>@reg.Participant.Phone</td>
             <td>@reg.Status.StatusName</td>
             <td>
                 <a href="/registrations/edit/@reg.Id" class="btn btn-primary">Изменить</a>

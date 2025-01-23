@@ -19,6 +19,8 @@ public class RegistrationsModel : PageModel
     {
         RegistrationsDb = _context.Registrations
             .Include(r => r.Status)
+            .Include(r => r.Event)
+            .Include(r => r.Participant)
             .OrderBy(r => r.Id)
             .AsNoTracking()
             .ToList();

@@ -14,6 +14,8 @@ public class RegistrationsCreate : PageModel
     [BindProperty] 
     public Registration Registration { get; set; } = new();
     public List<Status> Statuses { get; set; } = new();
+    public List<Event> Events { get; set; } = new();
+    public List<Participant> Participants { get; set; } = new();
 
     public RegistrationsCreate(ApplicationContext db, ILogger<RegistrationsCreate> logger)
     {
@@ -21,9 +23,17 @@ public class RegistrationsCreate : PageModel
         _logger = logger;
     }
 
-    public async Task OnGet()
+    public async Task OnGet(int id)
     {
-        Statuses = await _context.Statuses.ToListAsync();
+        Registration = _context.Registrations
+                       .Include(r => r.Event)
+                       .Include(r => r.Participant)
+                       .Include(r => r.Status)
+                       .FirstOrDefault(m => m.Id == id);
+
+        Events = _context.Events.ToList();
+        Participants = _context.Participants.ToList();
+        Statuses = _context.Statuses.ToList();
     }
     
     public async Task<IActionResult> OnPostAsync()

@@ -15,6 +15,8 @@ namespace ConMan.Pages
         public Registration Registration { get; set; }
 
         public List<Status> Statuses { get; set; } = new();
+        public List<Event> Events { get; set; } = new();
+        public List<Participant> Participants { get; set; } = new();
 
         public RegistrationsEdit(ApplicationContext db, ILogger<RegistrationsEdit> logger)
         {
@@ -26,7 +28,9 @@ namespace ConMan.Pages
         {
             Registration = await _context.Registrations
                 .Include(r => r.Status)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(r => r.Event)
+                .Include(r => r.Participant)
+                .FirstOrDefaultAsync(r => r.Id == id);
 
             if (Registration == null)
             {
@@ -34,6 +38,8 @@ namespace ConMan.Pages
             }
 
             Statuses = await _context.Statuses.ToListAsync();
+            Events = await _context.Events.ToListAsync();
+            Participants = await _context.Participants.ToListAsync();
             return Page();
         }
 

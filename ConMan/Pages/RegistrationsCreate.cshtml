@@ -9,12 +9,16 @@
 <form method="post">
     <p>
         <label asp-for="Registration.EventId">Номер события</label><br />
-        <input asp-for="Registration.EventId" type="number" required />
+        <select asp-for="Registration.EventId" asp-items="@(new SelectList(Model.Events, "Id", "Name"))" required>
+            <option value="">Выберите событие</option>
+        </select>
         <span asp-validation-for="Registration.EventId" class="text-danger"></span>
     </p>
     <p>
         <label asp-for="Registration.ParticipantId">Номер участника</label><br />
-        <input asp-for="Registration.ParticipantId" type="number" required />
+        <select asp-for="Registration.ParticipantId" asp-items="@(new SelectList(Model.Participants, "Id", "Name"))" required>
+            <option value="">Выберите участника</option>
+        </select>
         <span asp-validation-for="Registration.ParticipantId" class="text-danger"></span>
     </p>
     <p>

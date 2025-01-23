@@ -1,6 +1,7 @@
 ﻿using ConMan.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConMan.Pages;
 
@@ -11,10 +12,20 @@ public class EventsCreate : PageModel
     
     [BindProperty] 
     public Event Event { get; set; } = new();
+    public List<Location> Locations { get; set; } = new();
 
     public EventsCreate(ApplicationContext db)
     {
         _context = db;
+    }
+
+    public void OnGet(int id) 
+    {
+        Event = _context.Events
+                .Include(e => e.Location)
+                .FirstOrDefault(m => m.Id == id);
+
+        Locations = _context.Locations.ToList();
     }
 
     public async Task<IActionResult> OnPostAsync()
